@@ -27,6 +27,16 @@ def get_oto(src : str = "input/oto.ini", prefix: str = "", suffix : str = "") ->
 
     return pd.DataFrame(lista_oto)
 
+def save_new_oto(src : str = "output/oto.ini", oto : list = []):
+
+    with open(src, "w") as file:
+        for linha in oto:
+            print(linha)
+            # u-o-e__e-a-i__i-a-u.wav=o e_2,2812.359,300,-800,200,100
+            string = linha["name"] + "=" + linha["prefix"] + linha["alias"] + linha["suffix"] + "," + linha["offset"] + "," + linha["consonant"] + "," + linha["cutoff"] + "," + linha["pretturance"] + "," + linha["overlap"] + "\n"
+
+            file.write(string)
+
 def has_vowels(alias : str) -> bool:
     for letra in alias:
         if letra in prizma_vogais.keys():
@@ -100,7 +110,6 @@ def extract_from_vV(alias : str):
         raise Exception("SemiVogais ou Vogais Inválidas para CV")
 
 def extract_from_CC(alias : str):
-
     alias_original = alias
     c1 = c2 = ""
 
@@ -152,3 +161,35 @@ def extract_from_V_C(vogal: str, cons:str) -> str:
             break
 
     return v + semi_v + " " + c
+
+
+def extract_from_V_V(alias: str):
+    result = ""
+    item1, item2 = alias.split()
+    if "-" in alias:
+        # [- V] ou [V -]
+        if item1 == "-":
+            result = item1 + " " + prizma_vogais[item2]
+        else:
+            result = item2 + " " + prizma_vogais[item1]
+    else:
+        #[V V] ou [V v]
+        tem_semi = has_semi_vowels(alias)
+        if tem_semi:
+            # [V v]
+            result = prizma_vogais[item1] + " " + prizma_semi[item2]
+        else:
+            # [V V]
+            result = prizma_vogais[item1] + " " + prizma_vogais[item2]
+    
+    
+    return result
+
+def extract_from_V(vogal: str):
+    result = ""
+
+    try:
+        result = prizma_vogais[vogal]
+        return result
+    except:
+        return result
