@@ -1,83 +1,5 @@
 import pandas as pd
-
-prizma_vogais = {
-    "a'" : "ax",
-    "e'" : "eh",
-    "o'" : "oh",
-    "a" : "a",
-    "e": "e",
-    "i": "i",
-    "o": "o",
-    "u": "u",
-    "An" : "an",
-    "Am" : "an",
-    "A" : "an",
-    "En" : "en",
-    "Em" : "en",
-    "E" : "en",
-    "In" : "in",
-    "Im" : "in",
-    "I" : "in",
-    "On" : "on",
-    "Om" : "on",
-    "O" : "on",
-    "Un" : "un",
-    "Um" : "un",
-    "U" : "un",
-}
-
-prizma_consoantes = {
-    "b": "b",
-    "dj": "dj",
-    "d": "d",
-    "f": "f",
-    "g": "g",
-    "j": "j",
-    "k": "k",
-    "lh": "lh",
-    "l": "l",
-    "m": "m",
-    "nh": "nh",
-    "n": "n",
-    "p": "p",
-    "rr": "hr", # r carioca
-    "rh": "h", # r hálito
-    "r": "r", # r tapa
-    "RR": "rr", # r trilhado
-    "R": "rw", # r caipira
-    "s": "s",
-    "tch": "ch",
-    "t": "t",
-    "v": "v",
-    "x": "sh",
-    "z": "z",
-}
-
-prizma_semi = {
-    "yn": "y",
-    "wn": "w",
-    "y": "y",
-    "w": "w",
-}
-
-prizma_cc = [
-    "br",
-    "dr",
-    "fr",
-    "gr",
-    "kr",
-    "pr",
-    "tr",
-    "vr",
-    "bl",
-    "dl",
-    "fl",
-    "gl",
-    "kl",
-    "pl",
-    "tl",
-    "vl"
-]
+from dicionario import prizma_cc, prizma_consoantes, prizma_semi, prizma_vogais
 
 def get_oto(src : str = "input/oto.ini", prefix: str = "", suffix : str = "") -> pd.DataFrame:
 
@@ -203,3 +125,30 @@ def extract_from_CC(alias : str):
         c2 = aux
     
     return prizma_consoantes[c1] + " " + prizma_consoantes[c2]
+
+
+def extract_from_V_C(vogal: str, cons:str) -> str:
+    v = c = semi_v = ""
+
+    # Verificando se vogal possui semivogais
+    tem_semivogal = has_semi_vowels(vogal)
+    if tem_semivogal:
+        for semi in prizma_semi.keys():
+            if semi in vogal:
+                semi_v = prizma_semi[semi]
+                vogal = vogal.replace(semi, "")
+                break
+    
+    for vogal_prizma in prizma_vogais.keys():
+        if vogal_prizma in vogal:
+            v = prizma_vogais[vogal_prizma]
+            vogal = vogal.replace(vogal_prizma, "")
+            break
+    
+    for consoante_prizma in prizma_consoantes.keys():
+        if consoante_prizma in cons:
+            c = prizma_consoantes[consoante_prizma]
+            cons = cons.replace(consoante_prizma, "")
+            break
+
+    return v + semi_v + " " + c

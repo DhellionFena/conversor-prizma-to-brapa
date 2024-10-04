@@ -8,14 +8,12 @@ def main():
         alias : str = linha_oto.alias
         novo_alias = ""
 
-        consoantes = []
-        vogais = []
+        tem_vogal = utils.has_vowels(alias)
+        tem_semivogal = utils.has_semi_vowels(alias)
+        tem_consoante = utils.has_consonants(alias)
 
         if " " not in alias:
             # fonemas [CV] ou [CCV] ou [CC] ou [VV] ou [vV]
-
-            tem_vogal = utils.has_vowels(alias)
-            tem_consoante = utils.has_consonants(alias)
 
             if tem_vogal and tem_consoante:
                 # [CV] ou [CCV]
@@ -25,23 +23,37 @@ def main():
                 # [VV] ou [vV]
                 # Ignorando [VV] por enquanto. Será aproveitado o formato [V V]
 
-                if utils.has_semi_vowels(alias):
+                if tem_semivogal:
                     # [vV], ou seja: [yV] ou [wV]
                     novo_alias = utils.extract_from_vV(alias)
-                    print(alias)
-                    print(novo_alias)
 
             elif not tem_vogal and tem_consoante:
                 # [CC]
                 novo_alias = utils.extract_from_CC(alias)
             
             else:
-                raise(Exception(f"Alias inválido: {linha_oto.alias}"))
+                raise Exception(f"Alias inválido: {linha_oto.alias}")
 
         else:
-            # fonema [V C] ou [V V] ou [Vv C]
-            # print("VC: ", alias)
-            pass
+            # fonemas [V C] ou [V V] ou [V v] ou [Vv C] ou [- V] ou [V -]
+
+            alias_itens = alias.split()
+            if len(alias_itens) == 2:
+                if tem_vogal and tem_consoante:
+                    # [V C] ou [Vv C]
+                    novo_alias = utils.extract_from_V_C(vogal=alias_itens[0], cons=alias_itens[1])
+                    print(novo_alias)
+
+                elif tem_vogal and not tem_consoante:
+                    # [- V] ou [V V] ou [V v] ou [V -]
+                    pass
+
+                elif not tem_vogal and tem_consoante:
+                    # [C -]
+                    # Tratamento Ignorado
+                    pass
+                else:
+                    raise Exception(f"Alias Inválido: {linha_oto.alias}")
 
 
 
