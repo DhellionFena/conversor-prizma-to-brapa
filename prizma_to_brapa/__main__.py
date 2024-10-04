@@ -1,12 +1,13 @@
 import utils
 
 def main():
-    oto_df = utils.get_oto(suffix="_4")
+    oto_df = utils.get_oto(suffix="_2")
 
     nova_oto = []
     for linha_oto in oto_df.itertuples():
         alias : str = linha_oto.alias
         novo_alias = ""
+        add_hifen_start = False
 
         tem_vogal = utils.has_vowels(alias)
         tem_semivogal = utils.has_semi_vowels(alias)
@@ -18,6 +19,7 @@ def main():
             if tem_vogal and tem_consoante:
                 # [CV] ou [CCV]
                 novo_alias = utils.extract_from_CV(alias)
+                add_hifen_start = True
 
             elif tem_vogal and not tem_consoante:
                 # [VV] ou [vV] ou [V]
@@ -70,6 +72,20 @@ def main():
                 "overlap": linha_oto.overlap,
             }
             nova_oto.append(oto_dict)
+
+            if add_hifen_start:
+                oto_dict = {
+                    "name": linha_oto.name,
+                    "alias": "-"+novo_alias,
+                    "prefix": linha_oto.prefix,
+                    "suffix": linha_oto.suffix,
+                    "offset": linha_oto.offset,
+                    "consonant": linha_oto.consonant,
+                    "cutoff": linha_oto.cutoff,
+                    "pretturance": linha_oto.pretturance,
+                    "overlap": linha_oto.overlap,
+                }
+                nova_oto.append(oto_dict)
     
     utils.save_new_oto(oto=nova_oto)
 
