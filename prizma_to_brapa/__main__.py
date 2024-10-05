@@ -1,7 +1,8 @@
 import utils
 
 def main():
-    oto_df = utils.get_oto(suffix="_1")
+    suffix = input("Diga o sufixo: ")
+    oto_df = utils.get_oto(suffix=suffix)
 
     nova_oto = []
     for linha_oto in oto_df.itertuples():
@@ -30,6 +31,7 @@ def main():
                 if tem_semivogal:
                     # [vV], ou seja: [yV] ou [wV]
                     novo_alias = utils.extract_from_vV(alias)
+                    add_hifen_start = True
                 else:
                     # [V] ou [VV]
                     # Ignorando [VV] por enquanto. Será aproveitado o formato [V V]

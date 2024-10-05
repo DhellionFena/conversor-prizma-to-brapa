@@ -193,7 +193,7 @@ def extract_from_V_V(alias: str):
         tem_semi, _ = has_semi_vowels(alias)
         if tem_semi:
             # [V v]
-            print("TEM SEMI: ", alias)
+            # print("TEM SEMI: ", alias)
             result = prizma_vogais[item1] + " " + prizma_semi[item2]
         else:
             # [V V]
