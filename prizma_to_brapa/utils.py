@@ -169,9 +169,9 @@ def extract_from_V_V(alias: str):
     if "-" in alias:
         # [- V] ou [V -]
         if item1 == "-":
-            result = item1 + " " + prizma_vogais[item2]
+            result = item1 + prizma_vogais[item2]
         else:
-            result = item2 + " " + prizma_vogais[item1]
+            result = item2 + prizma_vogais[item1]
     else:
         #[V V] ou [V v]
         tem_semi = has_semi_vowels(alias)
