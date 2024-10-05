@@ -31,29 +31,45 @@ def save_new_oto(src : str = "output/oto.ini", oto : list = []):
 
     with open(src, "w") as file:
         for linha in oto:
-            print(linha)
+            # print(linha)
             # u-o-e__e-a-i__i-a-u.wav=o e_2,2812.359,300,-800,200,100
             string = linha["name"] + "=" + linha["prefix"] + linha["alias"] + linha["suffix"] + "," + linha["offset"] + "," + linha["consonant"] + "," + linha["cutoff"] + "," + linha["pretturance"] + "," + linha["overlap"] + "\n"
 
             file.write(string)
 
-def has_vowels(alias : str) -> bool:
-    for letra in alias:
-        if letra in prizma_vogais.keys():
-            return True
-    return False
+def generate_oto_dict(alias: str, linha_oto):
+    oto_dict = {
+        "name": linha_oto.name,
+        "alias": alias,
+        "prefix": linha_oto.prefix,
+        "suffix": linha_oto.suffix,
+        "offset": linha_oto.offset,
+        "consonant": linha_oto.consonant,
+        "cutoff": linha_oto.cutoff,
+        "pretturance": linha_oto.pretturance,
+        "overlap": linha_oto.overlap,
+    }
+    return oto_dict
 
-def has_semi_vowels(alias : str) -> bool:
-    for letra in alias:
-        if letra in prizma_semi.keys():
-            return True
-    return False
+def has_vowels(alias : str) -> (bool,str):
+    for letra in prizma_vogais.keys():
+        if letra in alias:
+            return (True, alias.replace(letra, ""))
+    return False, alias
 
-def has_consonants(alias : str) -> bool:
-    for letra in alias:
-        if letra in prizma_consoantes.keys():
-            return True
-    return False
+def has_semi_vowels(alias : str) -> (bool,str):
+    for letra in prizma_semi.keys():
+        if letra in alias:
+            alias = alias.replace(letra, "")
+            return (True, alias.replace(letra, ""))
+    return False, alias
+
+def has_consonants(alias : str) -> (bool,str):
+    for letra in prizma_consoantes.keys():
+        if letra in alias:
+            alias = alias.replace(letra, "")
+            return (True, alias.replace(letra, ""))
+    return False, alias
 
 def extract_from_CV(alias : str):
 
@@ -169,14 +185,15 @@ def extract_from_V_V(alias: str):
     if "-" in alias:
         # [- V] ou [V -]
         if item1 == "-":
-            result = item1 + prizma_vogais[item2]
+            result = item1 + " " + prizma_vogais[item2]
         else:
-            result = item2 + prizma_vogais[item1]
+            result = prizma_vogais[item1] + item2 
     else:
         #[V V] ou [V v]
-        tem_semi = has_semi_vowels(alias)
+        tem_semi, _ = has_semi_vowels(alias)
         if tem_semi:
             # [V v]
+            print("TEM SEMI: ", alias)
             result = prizma_vogais[item1] + " " + prizma_semi[item2]
         else:
             # [V V]
@@ -193,3 +210,9 @@ def extract_from_V(vogal: str):
         return result
     except:
         return result
+
+def can_add_r_or_l(alias: str):
+    for fonema in prizma_cc:
+        if alias[-1] in fonema[0]:
+            return True
+    return False

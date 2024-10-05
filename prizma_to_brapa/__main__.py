@@ -1,7 +1,7 @@
 import utils
 
 def main():
-    oto_df = utils.get_oto(suffix="_4")
+    oto_df = utils.get_oto(suffix="_1")
 
     nova_oto = []
     for linha_oto in oto_df.itertuples():
@@ -9,12 +9,12 @@ def main():
         novo_alias = ""
         add_hifen_start = False
         add_hifen_end = False
+        add_ending_r_l = False
 
-        tem_vogal = utils.has_vowels(alias)
-        tem_semivogal = utils.has_semi_vowels(alias)
-        tem_consoante = utils.has_consonants(alias)
-
-        print("avaliando", alias)
+        alias_check = alias
+        tem_vogal, alias_check = utils.has_vowels(alias_check)
+        tem_semivogal, alias_check = utils.has_semi_vowels(alias_check)
+        tem_consoante, alias_check = utils.has_consonants(alias_check)
 
         if " " not in alias:
             # fonemas [CV] ou [CCV] ou [CC] ou [VV] ou [vV] ou [V]
@@ -51,10 +51,14 @@ def main():
                     # [V C] ou [Vv C]
                     novo_alias = utils.extract_from_V_C(vogal=alias_itens[0], cons=alias_itens[1])
                     add_hifen_end = True
+                    add_ending_r_l = utils.can_add_r_or_l(alias_itens[1])
 
                 elif tem_vogal and not tem_consoante:
                     # [- V] ou [V V] ou [V v] ou [V -]
                     novo_alias = utils.extract_from_V_V(alias)
+
+                    if tem_semivogal:
+                        add_hifen_end = True
 
                 elif not tem_vogal and tem_consoante:
                     # [C -]
@@ -64,48 +68,33 @@ def main():
                     raise Exception(f"Alias Inválido: {linha_oto.alias}")
         
         if len(novo_alias) > 0:
-            oto_dict = {
-                "name": linha_oto.name,
-                "alias": novo_alias,
-                "prefix": linha_oto.prefix,
-                "suffix": linha_oto.suffix,
-                "offset": linha_oto.offset,
-                "consonant": linha_oto.consonant,
-                "cutoff": linha_oto.cutoff,
-                "pretturance": linha_oto.pretturance,
-                "overlap": linha_oto.overlap,
-            }
+            oto_dict = utils.generate_oto_dict(novo_alias, linha_oto)
             nova_oto.append(oto_dict)
 
             if add_hifen_start:
-                oto_dict = {
-                    "name": linha_oto.name,
-                    "alias": "-"+novo_alias,
-                    "prefix": linha_oto.prefix,
-                    "suffix": linha_oto.suffix,
-                    "offset": linha_oto.offset,
-                    "consonant": linha_oto.consonant,
-                    "cutoff": linha_oto.cutoff,
-                    "pretturance": linha_oto.pretturance,
-                    "overlap": linha_oto.overlap,
-                }
+                oto_dict = utils.generate_oto_dict("-"+novo_alias, linha_oto)
                 nova_oto.append(oto_dict)
 
             if add_hifen_end:
-                oto_dict = {
-                    "name": linha_oto.name,
-                    "alias": novo_alias+"-",
-                    "prefix": linha_oto.prefix,
-                    "suffix": linha_oto.suffix,
-                    "offset": linha_oto.offset,
-                    "consonant": linha_oto.consonant,
-                    "cutoff": linha_oto.cutoff,
-                    "pretturance": linha_oto.pretturance,
-                    "overlap": linha_oto.overlap,
-                }
+                oto_dict = utils.generate_oto_dict(novo_alias+"-", linha_oto)
+                nova_oto.append(oto_dict)
+            
+            if add_ending_r_l:
+
+                oto_dict = utils.generate_oto_dict(novo_alias+"r", linha_oto)
+                nova_oto.append(oto_dict)
+
+                oto_dict = utils.generate_oto_dict(novo_alias+"r-", linha_oto)
+                nova_oto.append(oto_dict)
+
+                oto_dict = utils.generate_oto_dict(novo_alias+"l", linha_oto)
+                nova_oto.append(oto_dict)
+
+                oto_dict = utils.generate_oto_dict(novo_alias+"l-", linha_oto)
                 nova_oto.append(oto_dict)
     
     utils.save_new_oto(oto=nova_oto)
+    print("NOVA OTO GERADA.")
 
 
 if __name__ == "__main__":
