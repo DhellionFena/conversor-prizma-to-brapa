@@ -2,3 +2,4 @@
 /.venv
 /prizma_to_brapa/__pycache__
 run_prizma_to_brapa.bat
+*.pyc
