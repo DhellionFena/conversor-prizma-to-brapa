@@ -24,7 +24,7 @@ def create_run_file() -> None:
         f.write('@echo off\n')
         f.write(f'cd "{actual_folder}"\n')
         f.write(
-            f'"{actual_folder}\\.venv\\Scripts\\python.exe" "{actual_folder}\\main.py\n"pause')
+            f'"{actual_folder}\\.venv\\Scripts\\python.exe" "{actual_folder}\\main.py"\npause')
 
 
 if __name__ == '__main__':
