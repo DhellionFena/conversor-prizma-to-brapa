@@ -1,14 +1,19 @@
-[tool.poetry]
+[project]
 name = "prizma-to-brapa"
 version = "0.1.0"
-description = ""
-authors = ["Antônio César <antonioazevedo.dev@gmail.com>"]
+description = "Conversor de Alias da conotação PRIZMA para BRAPA."
+authors = [
+    {name = "Antônio César",email = "antonioazevedo.dev@gmail.com"}
+]
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas (>=2.2.3,<3.0.0)",
+    "tk (>=0.1.0,<0.2.0)"
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-pandas = "^2.2.3"
-
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core"]
