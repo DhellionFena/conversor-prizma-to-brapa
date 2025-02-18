@@ -26,14 +26,21 @@ Tanto _PRIZMA_ quanto _BRAPA_ são reclists (listas de gravação) usadas para c
 
 2. Converta os arquivos:
 
-   - Execute `run_prizma_to_brapa.bat` para realizar a conversão dos oto.ini.
+   - Execute `run_prizma_to_brapa.bat` gerado para realizar a conversão dos oto.ini.
+   - Selecione a oto.ini que deseja converter
+   - Digite o prefixo e o sufixo, caso existam
+   - Repita o processo caso hajam mais oto.ini para converter!
 
 3. Acesse os arquivos convertidos:
 
-   - Os novos oto.ini serão salvos na pasta **output/**.
+   - Os novos oto.ini gerados serão salvos na pasta **output/**.
 
 ## 🛠️ Requisitos
 
 Python >=3.12
 
-Este projeto foi desenvolvido com 💖 por DhellionFena.
+<p align="center">
+  <small>
+    Desenvolvido com 💖 por DhellionFena.
+  </small>
+</p>
