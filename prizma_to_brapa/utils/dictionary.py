@@ -2,6 +2,16 @@
 File containing the dictionary entries from prizma to brapa
 '''
 prizma_vogais = {
+    "An": "an",
+    "Am": "an",
+    "En": "en",
+    "Em": "en",
+    "In": "in",
+    "Im": "in",
+    "On": "on",
+    "Om": "on",
+    "Un": "un",
+    "Um": "un",
     "a'": "ax",
     "e'": "eh",
     "o'": "oh",
@@ -10,20 +20,10 @@ prizma_vogais = {
     "i": "i",
     "o": "o",
     "u": "u",
-    "An": "an",
-    "Am": "an",
     "A": "an",
-    "En": "en",
-    "Em": "en",
     "E": "en",
-    "In": "in",
-    "Im": "in",
     "I": "in",
-    "On": "on",
-    "Om": "on",
     "O": "on",
-    "Un": "un",
-    "Um": "un",
     "U": "un",
 }
 

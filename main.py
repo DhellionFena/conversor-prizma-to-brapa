@@ -39,6 +39,7 @@ def main():
         add_hyphen_start = False
         add_hyphen_end = False
         add_ending_r_or_l = False
+        add_ending_x = False
 
         # Check if the alias has a vowel, a semivowel, or a consonant
         alias_check = alias
@@ -74,6 +75,8 @@ def main():
                         vogal=alias_parts[0], cons=alias_parts[1])
                     add_hyphen_end = True
                     add_ending_r_or_l = can_add_r_or_l(alias_parts[1])
+                    if " h" == new_alias[-2:]:
+                        add_ending_x = True
 
                 elif has_vowel and not has_consonant:
                     new_alias = extract_from_vowel_vowel(alias)
@@ -103,6 +106,15 @@ def main():
                 for suffix in ["r", "r-", "l", "l-"]:
                     oto_dict = generate_oto_dict(new_alias + suffix, oto_line)
                     new_oto_entries.append(oto_dict)
+
+            if add_ending_x:
+
+                ending_rotica = new_alias.replace("h", "x")
+                oto_dict = generate_oto_dict(ending_rotica, oto_line)
+                new_oto_entries.append(oto_dict)
+
+                oto_dict = generate_oto_dict(ending_rotica+"-", oto_line)
+                new_oto_entries.append(oto_dict)
 
     # Save the new OTO file
     save_new_oto(oto=new_oto_entries)
