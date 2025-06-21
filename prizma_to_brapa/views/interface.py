@@ -59,17 +59,17 @@ class PrizmaToBrapaGUI(tk.Tk):
         frame_inputs = tk.Frame(self, bg="#58605B")
         frame_inputs.pack(padx=10, pady=5, fill="x")
 
-        # Entrada para Prefixos
+        # Entrada para Prefixo
         label_prefix = tk.Label(
-            frame_inputs, text="Prefixos:", bg="#58605B", fg="white")
+            frame_inputs, text="Prefixo:", bg="#58605B", fg="white")
         label_prefix.grid(row=0, column=0, sticky="w")
 
         entry_prefix = tk.Entry(frame_inputs, textvariable=self.prefix_var)
         entry_prefix.grid(row=0, column=1, sticky="we", padx=(5, 20))
 
-        # Entrada para Sufixos
+        # Entrada para Sufixo
         label_suffix = tk.Label(
-            frame_inputs, text="Sufixos:", bg="#58605B", fg="white")
+            frame_inputs, text="Sufixo:", bg="#58605B", fg="white")
         label_suffix.grid(row=0, column=2, sticky="w")
 
         entry_suffix = tk.Entry(frame_inputs, textvariable=self.suffix_var)
@@ -128,6 +128,7 @@ class PrizmaToBrapaGUI(tk.Tk):
             frame_grid, text="Salvar conversão",
             bg="#9744DB",
             fg="white",
+            command=self._on_save_oto
         )
         btn_save.grid(
             # espaço entre colunas
@@ -145,10 +146,12 @@ class PrizmaToBrapaGUI(tk.Tk):
         if self.oto_str is None or self.oto_str.strip() == "":
             return
 
-        print(self.text_original.get("1.0", "end"))
+        # print(self.text_original.get("1.0", "end-1c"))
+        oto_converted_str = actions.run_conversion(self.text_original.get(
+            "1.0", "end-1c"), self.prefix_var.get(), self.suffix_var.get())
 
-        # self.text_converted.delete("1.0", "end")
-        # self.text_converted.insert("1.0", self.oto_str)
+        self.text_converted.delete("1.0", "end")
+        self.text_converted.insert("1.0", oto_converted_str)
 
     def _on_save_oto(self):
-        pass
+        actions.save_new_oto(self.text_converted.get("1.0", "end-1c"))
