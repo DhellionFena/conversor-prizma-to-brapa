@@ -3,3 +3,14 @@
 /prizma_to_brapa/__pycache__
 run_prizma_to_brapa.bat
 *.pyc
+build/conversor/Analysis-00.toc
+build/conversor/base_library.zip
+build/conversor/conversor.pkg
+build/conversor/EXE-00.toc
+build/conversor/PKG-00.toc
+build/conversor/PYZ-00.pyz
+build/conversor/PYZ-00.toc
+build/conversor/warn-conversor.txt
+build/conversor/xref-conversor.html
+conversor.spec
+dist/conversor.exe
