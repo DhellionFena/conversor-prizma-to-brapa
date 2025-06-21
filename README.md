@@ -31,10 +31,6 @@ Tanto _PRIZMA_ quanto _BRAPA_ são reclists (listas de gravação) usadas para c
    - Digite o prefixo e o sufixo, caso existam
    - Repita o processo caso hajam mais oto.ini para converter!
 
-3. Acesse os arquivos convertidos:
-
-   - Os novos oto.ini gerados serão salvos na pasta **output/**.
-
 ## 🛠️ Requisitos
 
 Python >=3.12
